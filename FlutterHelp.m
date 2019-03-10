@@ -108,7 +108,41 @@
 
  * --------------------------------------------------------------------------
  
+ * -----------------------------遇到的错误：-----------------------------------
  
+ 0.在执行命令时：flutter create -t module MyApp_flutter ”MyApp_flutter" is not a valid Dart package name.
+ 创建的module项目名首字母必须小写，dart语言规定。
+ 
+ 1./Users/DYT/Desktop/flutter/packages/flutter_tools/bin/xcode_backend.sh: No such file or directory
+ PhaseScriptExecution failed with a nonzero exit code
+ 因为你修改了flutter安装的路径，所以找不到。
+ 解决办法：将你iOS项目里的通过flutter create创建的module文件夹删除，重新执行一遍flutter create -t module flutter_module
+ 
+ 2."Xcodeproj doesn't know about the following attributes {"inputFileListPaths"=>[], "outputFileListPaths"=>[]} for the 'PBXShellScriptBuildPhase' isa"
+ Xcode10的问题，参考链接：https://github.com/CocoaPods/CocoaPods/issues/7835
+ Xcode10下删除inputFileListPaths和outputFileListPaths。
+ 
+ 3.前期安装flutter时的问题
+ ✗ **libimobiledevice and ideviceinstaller are not installed. To install, run:
+ brew install --HEAD libimobiledevice
+ brew install ideviceinstaller**
+ 你发现你一直执行，然后flutter doctor之后还是会报这两个错。
+ 解决办法：
+ brew update
+ brew uninstall --ignore-dependencies libimobiledevice
+ brew uninstall --ignore-dependencies usbmuxd
+ brew install --HEAD usbmuxd
+ brew unlink usbmuxd
+ brew link usbmuxd
+ brew install --HEAD libimobiledevice
+ 前提要在很好的网络环境下。
+ 
+ 4.error: Multiple commands produce '/Users/DYT/Library/Developer/Xcode/DerivedData/MyApp-gluwqeevdimskxdwcylioghkuskw/Build/Products/Debug-iphonesimulator/MyApp.app/Frameworks/Flutter.framework':
+ 1) Target 'MyApp' has copy command from '/Users/DYT/Desktop/demo/Flutter项目/MyApp/Flutter/engine/Flutter.framework' to '/Users/DYT/Library/Developer/Xcode/DerivedData/MyApp-gluwqeevdimskxdwcylioghkuskw/Build/Products/Debug-iphonesimulator/MyApp.app/Frameworks/Flutter.framework'
+ 2) That command depends on command in Target 'MyApp': script phase “[CP] Embed Pods Frameworks”
+ Xcode问题，Xcode -> File -> workingSpace Setting -> build system 改成下面那个
+ 根本解决办法：这里我是用cocoapods管理的flutter，其实不需要再去添加配置文件和生成Flutter文件夹并添加Flutter相关文件了。所以如果用cocoaPods管理的Flutter，就我上面写的步骤就行了。
+ * --------------------------------------------------------------------------
  
  */
 
